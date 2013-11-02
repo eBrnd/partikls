@@ -41,6 +41,14 @@ int main() {
         case SDL_MOUSEBUTTONDOWN:
           g.rainbowSplash(partikls, event.button.x, event.button.y);
           break;
+        case SDL_KEYDOWN:
+          switch(event.key.keysym.sym)
+          {
+            case SDLK_ESCAPE:
+              SDL_Quit();
+              exit(0);
+          }
+          break;
       }
     }
 
