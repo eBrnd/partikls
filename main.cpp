@@ -39,7 +39,14 @@ int main() {
     while(SDL_PollEvent(&event)) {
       switch(event.type) {
         case SDL_MOUSEBUTTONDOWN:
-          g.rainbowSplash(partikls, event.button.x, event.button.y);
+          switch(event.button.button) {
+            case 1:
+              g.rainbowSplash(partikls, event.button.x, event.button.y);
+              break;
+            case 3:
+              g.asplode(partikls, event.button.x, event.button.y);
+              break;
+          }
           break;
         case SDL_MOUSEMOTION:
           g.sparks(partikls, event.motion.x, event.motion.y);

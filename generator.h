@@ -8,6 +8,7 @@ class Generator {
   public:
     void rainbowSplash(Partikls& p, const unsigned int x, const unsigned int y);
     void sparks(Partikls &p, const unsigned int x, const unsigned int y);
+    void asplode(Partikls &p, const unsigned int x, const unsigned int y);
 
   private:
     GeneratorHelper h;
