@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_framerate.h>
+#include <cmath>
 
 #include "partikls.h"
 
@@ -30,7 +31,10 @@ int main() {
   SDL_setFramerate(fpsmanager, 60);
 
   Partikls partikls;
-  partikls.add(Partikl(100, 100, 1, 1, 100, 5, Partikl::Type::SQUARE, 0xffffffff));
+  for(unsigned int i = 0; i < 100; i++)
+  {
+    partikls.add(Partikl(100, 100, std::sin(i), std::cos(i), 1000, 5, Partikl::Type::SQUARE, 0xffffffff));
+  }
 
   for(;;) {
     SDL_FillRect(display, NULL, 0); // clear the buffer
