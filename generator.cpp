@@ -12,3 +12,12 @@ void Generator::rainbowSplash(Partikls& p, const unsigned int x, const unsigned 
     p.add(Partikl(x, y, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed, h.rand() % 64, 2, Partikl::Type::SQUARE, h.hue2rgb(angle + 60)));
   }
 }
+
+void Generator::sparks(Partikls &p, const unsigned int x, const unsigned int y) {
+  for(int i = 0; i < 25; i++)
+  {
+    float speed = (float)h.rand() / (float)RAND_MAX;
+    float angle = ((float)h.rand() / (float)RAND_MAX) * 360; // TODO radian conversion can be done right here
+    p.add(Partikl(x, y, (float)cos(angle * (3.14159265 / 180)) * speed, (float)sin(angle * (3.14159265 / 180)) * speed + .3f, h.rand() % 100, 1, Partikl::Type::PIXEL, (h.rand() | 0xFF0000FF) & 0xFFD700FF));
+  }
+}

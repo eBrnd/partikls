@@ -41,6 +41,9 @@ int main() {
         case SDL_MOUSEBUTTONDOWN:
           g.rainbowSplash(partikls, event.button.x, event.button.y);
           break;
+        case SDL_MOUSEMOTION:
+          g.sparks(partikls, event.motion.x, event.motion.y);
+          break;
         case SDL_KEYDOWN:
           switch(event.key.keysym.sym)
           {
