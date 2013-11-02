@@ -1,9 +1,9 @@
 #include <iostream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_framerate.h>
-#include <cmath>
 
 #include "partikls.h"
+#include "generator.h"
 
 int main() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -31,10 +31,8 @@ int main() {
   SDL_setFramerate(fpsmanager, 60);
 
   Partikls partikls;
-  for(unsigned int i = 0; i < 100; i++)
-  {
-    partikls.add(Partikl(100, 100, std::sin(i), std::cos(i), 1000, 5, Partikl::Type::SQUARE, 0xffffffff));
-  }
+  Generator g;
+  g.rainbowSplash(partikls, 100, 100);
 
   for(;;) {
     SDL_FillRect(display, NULL, 0); // clear the buffer

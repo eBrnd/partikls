@@ -1,3 +1,6 @@
+#ifndef PARTIKL_H
+#define PARTIKL_H
+
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 
@@ -9,7 +12,7 @@ class Partikl {
       : x(_x), y(_y), vx(_vx), vy(_vy), ttl(_ttl), size(_size), type(_type), color(_color) {}
 
     inline bool update() { // returns whether the partikl is still alive after the update
-      if(--ttl)
+      if(ttl--)
       {
         x += vx;
         y += vy;
@@ -46,3 +49,5 @@ class Partikl {
     Type type; Uint32 color;
 
 };
+
+#endif

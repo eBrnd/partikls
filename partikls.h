@@ -1,3 +1,6 @@
+#ifndef PARTIKLS_H
+#define PARTIKLS_H
+
 #include "partikl.h"
 
 #include <vector>
@@ -16,3 +19,5 @@ class Partikls {
     void draw(SDL_Surface* display);
     void update();
 };
+
+#endif
