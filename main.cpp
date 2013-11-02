@@ -32,9 +32,20 @@ int main() {
 
   Partikls partikls;
   Generator g;
-  g.rainbowSplash(partikls, 100, 100);
 
   for(;;) {
+    // handle input
+    SDL_Event event;
+    while(SDL_PollEvent(&event)) {
+      switch(event.type) {
+        case SDL_MOUSEBUTTONDOWN:
+          g.rainbowSplash(partikls, event.button.x, event.button.y);
+          break;
+      }
+    }
+
+
+    // draw the scene
     SDL_FillRect(display, NULL, 0); // clear the buffer
 
     partikls.update();
