@@ -18,10 +18,14 @@ class Partikl {
       {
         x += vx;
         y += vy;
+
+        if(x < 0 || x > 800 || y < 0 || y > 600) // destroy off-screen particles
+          return false;
+
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     }
 
     inline void draw(SDL_Surface* display) {
