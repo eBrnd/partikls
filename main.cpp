@@ -33,6 +33,7 @@ int main() {
   Partikls partikls;
   Generator g;
 
+  unsigned int last_mouse_x = 0, last_mouse_y = 0;
   for(;;) {
     // handle input
     SDL_Event event;
@@ -49,6 +50,8 @@ int main() {
           }
           break;
         case SDL_MOUSEMOTION:
+          last_mouse_x = event.motion.x;
+          last_mouse_y = event.motion.y;
           g.sparks(partikls, event.motion.x, event.motion.y);
           break;
         case SDL_KEYDOWN:
@@ -57,6 +60,9 @@ int main() {
             case SDLK_ESCAPE:
               SDL_Quit();
               exit(0);
+            case SDLK_m:
+              partikls.add(Partikl(last_mouse_x, last_mouse_y, 0.f, 0.f, -1, 30, Partikl::Type::CIRCLE, 0xffffffff, 1.f));
+              break;
           }
           break;
       }
