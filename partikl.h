@@ -1,6 +1,8 @@
 #ifndef PARTIKL_H
 #define PARTIKL_H
 
+#include <cmath>
+#include <vector>
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 
@@ -13,7 +15,7 @@ class Partikl {
     Partikl(float _x, float _y, float _vx, float _vy, unsigned int _ttl, unsigned int _size, Type _type, Uint32 _color, float _mass = 0.f)
       : x(_x), y(_y), vx(_vx), vy(_vy), ttl(_ttl), size(_size), type(_type), color(_color), mass(_mass) {}
 
-    inline bool update() { // returns whether the partikl is still alive after the update
+    inline bool update(const std::vector<Partikl>& partikls) { // returns whether the partikl is still alive after the update
       if(ttl < 0 || ttl--) // negative ttl -> never die.
       {
         x += vx;
@@ -22,6 +24,30 @@ class Partikl {
         if(x < 0 || x > 800 || y < 0 || y > 600) // destroy off-screen particles
           return false;
 
+        // gravity based acceleration
+        if(mass != 0.f) {
+          float ax = 0.f, ay = 0.f;
+          for(std::vector<Partikl>::const_iterator it = partikls.begin(); it != partikls.end(); ++it) {
+            if(&(*it) != this && it->mass != 0.f) {
+              const float dx = x - it->x;
+              const float dy = y - it->y;
+
+              const unsigned int rsquare = dx * dx + dy * dy;
+              if(rsquare == 0)
+                continue;
+              const float angle = atan2(dx, dy);
+
+              const float f = it->mass * mass / rsquare;
+              const float a = f / mass;
+
+              ax -= std::sin(angle) * a;
+              ay -= std::cos(angle) * a;
+            }
+          }
+
+          vx += ax;
+          vy += ay;
+        }
         return true;
       }
 
