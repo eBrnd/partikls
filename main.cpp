@@ -63,6 +63,9 @@ int main() {
             case SDLK_m:
               partikls.add(Partikl(last_mouse_x, last_mouse_y, 0.f, 0.f, -1, 30, Partikl::Type::CIRCLE, 0xffffffff, 1.f));
               break;
+            case SDLK_n:
+              partikls.add(Partikl(last_mouse_x, last_mouse_y, 0.f, 0.f, -1, 30, Partikl::Type::CIRCLE, 0xff0000ff, 1.f, true));
+              break;
           }
           break;
       }

@@ -6,14 +6,14 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
 
-class Partikl {
-  friend class Partikls;
+#include <iostream>
 
+class Partikl {
   public:
     enum class Type { PIXEL, CIRCLE, SQUARE };
 
-    Partikl(float _x, float _y, float _vx, float _vy, unsigned int _ttl, unsigned int _size, Type _type, Uint32 _color, float _mass = 0.f)
-      : x(_x), y(_y), vx(_vx), vy(_vy), ttl(_ttl), size(_size), type(_type), color(_color), mass(_mass) {}
+    Partikl(float _x, float _y, float _vx, float _vy, unsigned int _ttl, unsigned int _size, Type _type, Uint32 _color, float _mass = 0.f, bool _solid = false)
+      : x(_x), y(_y), vx(_vx), vy(_vy), ttl(_ttl), size(_size), type(_type), color(_color), mass(_mass), solid(_solid) {}
 
     inline bool update(const std::vector<Partikl>& partikls) { // returns whether the partikl is still alive after the update
       if(ttl < 0 || ttl--) // negative ttl -> never die.
@@ -25,23 +25,30 @@ class Partikl {
           return false;
 
         // gravity based acceleration
-        if(mass != 0.f) {
+        if(mass != 0.f || solid) {
           float ax = 0.f, ay = 0.f;
           for(std::vector<Partikl>::const_iterator it = partikls.begin(); it != partikls.end(); ++it) {
-            if(&(*it) != this && it->mass != 0.f) {
-              const float dx = x - it->x;
-              const float dy = y - it->y;
+            const float dx = x - it->x;
+            const float dy = y - it->y;
 
-              const unsigned int rsquare = dx * dx + dy * dy;
-              if(rsquare == 0)
-                continue;
-              const float angle = atan2(dx, dy);
+            const unsigned int rsquare = dx * dx + dy * dy;
 
-              const float f = it->mass * mass / rsquare;
-              const float a = f / mass;
+            if(&(*it) != this) {
+              if(it->mass != 0.f) {
+                if(rsquare == 0)
+                  continue;
+                const float angle = atan2(dx, dy);
 
-              ax -= std::sin(angle) * a;
-              ay -= std::cos(angle) * a;
+                const float f = it->mass * mass / rsquare;
+                const float a = f / mass;
+
+                ax -= std::sin(angle) * a;
+                ay -= std::cos(angle) * a;
+              }
+
+              if(solid && it->solid && (size + it->size) * (size + it->size) > rsquare) {
+                collide(*it);
+              }
             }
           }
 
@@ -52,6 +59,11 @@ class Partikl {
       }
 
       return false;
+    }
+
+    inline void collide(const Partikl& p) {
+      // for testing, just remove particle
+      ttl = 0;
     }
 
     inline void draw(SDL_Surface* display) {
@@ -78,6 +90,7 @@ class Partikl {
     float x,y,
           vx,vy,
           mass;
+    bool solid;
     int ttl;
     unsigned int size;
     Type type; Uint32 color;
